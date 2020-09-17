@@ -5,16 +5,23 @@
 // ESP-IDF part
 #include <driver/gpio.h>
 
-void my_gpio_enable(uint8_t gpio) {
-    gpio_set_direction(gpio, GPIO_MODE_INPUT);
-}
 
-void my_gpio_pullup(uint8_t gpio) {
-    gpio_set_pull_mode(gpio, GPIO_PULLUP_ONLY);
-}
-
-void my_gpio_pulldown(uint8_t gpio) {
-    gpio_set_pull_mode(gpio, GPIO_PULLDOWN_ONLY);
+void my_gpio_enable(uint8_t gpio, bool active_high){
+    gpio_config_t io_conf = {0};
+    
+    io_conf.pin_bit_mask = (1ULL<<gpio);
+    io_conf.mode = GPIO_MODE_INPUT;
+    
+    if (active_high) {
+        io_conf.pull_up_en = GPIO_PULLUP_DISABLE;
+        io_conf.pull_down_en = GPIO_PULLDOWN_ENABLE;
+    } else {
+        io_conf.pull_up_en = GPIO_PULLUP_ENABLE;
+        io_conf.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    }
+    
+    io_conf.intr_type = GPIO_PIN_INTR_DISABLE;
+    gpio_config(&io_conf);
 }
 
 uint8_t my_gpio_read(uint8_t gpio) {
@@ -26,16 +33,15 @@ uint8_t my_gpio_read(uint8_t gpio) {
 // ESP-OPEN-RTOS part
 #include <esp/gpio.h>
 
-void my_gpio_enable(uint8_t gpio) {
+void my_gpio_enable(uint8_t gpio, bool active_high) {
+    
     gpio_enable(gpio, GPIO_INPUT);
-}
-
-void my_gpio_pullup(uint8_t gpio) {
-    gpio_set_pullup(gpio, true, true);
-}
-
-void my_gpio_pulldown(uint8_t gpio) {
-    gpio_set_pullup(gpio, false, false);
+    
+    if (active_high) {
+        gpio_set_pullup(gpio, false, false);
+    } else {
+        gpio_set_pullup(gpio, true, true);
+    }
 }
 
 uint8_t my_gpio_read(uint8_t gpio) {
