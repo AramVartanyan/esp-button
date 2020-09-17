@@ -154,12 +154,8 @@ int button_create(const uint8_t gpio_num,
         }
     }
 
-    my_gpio_enable(button->gpio_num);
-    if (config.active_level == button_active_low) {
-        my_gpio_pullup(button->gpio_num);
-    } else {
-        my_gpio_pulldown(button->gpio_num);
-    }
+    
+    my_gpio_enable(button->gpio_num, config.active_level);
 
     int r = toggle_create(gpio_num, button_toggle_callback, button);
     if (r) {
@@ -177,7 +173,7 @@ int button_create(const uint8_t gpio_num,
     return 0;
 }
 
-void button_destroy(const uint8_t gpio_num) {
+void button_delete(const uint8_t gpio_num) {
     if (!buttons_lock) {
         buttons_init();
     }
