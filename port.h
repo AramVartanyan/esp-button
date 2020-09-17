@@ -12,7 +12,5 @@
     #include <timers.h>
 #endif
 
-void my_gpio_enable(uint8_t gpio);
-void my_gpio_pullup(uint8_t gpio);
-void my_gpio_pulldown(uint8_t gpio);
+void my_gpio_enable(uint8_t gpio, bool active_high);
 uint8_t my_gpio_read(uint8_t gpio);
