@@ -102,7 +102,7 @@ int toggle_create(const uint8_t gpio_num, toggle_callback_fn callback, void* con
     toggle->context = context;
     toggle->last_high = my_gpio_read(toggle->gpio_num) == 1;
 
-    my_gpio_enable(toggle->gpio_num);
+    my_gpio_enable(toggle->gpio_num, false);
 
     xSemaphoreTake(toggles_lock, portMAX_DELAY);
 
