@@ -3,6 +3,8 @@ esp-button
 Library for [ESP-OPEN-RTOS](https://github.com/SuperHouse/esp-open-rtos) to handle
 button and toggle input.
 
+The original library is updated to be compatable also with the ESP8266_RTOS_SDK and ESP-IDF.
+
 Before you start using library, you need to figure out how button is/will be wired.
 There are two ways to wire button:
 * active high - signal goes from low to high when button is pressed
