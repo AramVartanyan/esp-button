@@ -157,7 +157,7 @@ int button_create(const uint8_t gpio_num,
     
     my_gpio_enable(button->gpio_num, config.active_level);
 
-    int r = toggle_create(gpio_num, button_toggle_callback, button);
+    int r = toggle_create(gpio_num, button_toggle_callback, config.active_level, button);
     if (r) {
         button_free(button);
         return -4;
